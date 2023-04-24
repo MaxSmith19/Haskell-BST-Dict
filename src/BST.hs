@@ -17,16 +17,22 @@ module BST where
 
 
 -- defining the Binary search tree data structure
-data BST key value = Empty 
-    | Node key value (BST key value) (BST key value) deriving (Show, Eq)
+data BST key value = Empty | Node key value (BST key value) (BST key value) deriving (Show, Eq)
 -- The BST can either be created with nothing (Empty)
 -- or it can be created with a key, value, and two BSTs (Node)
+-- deriving is a method of polymorphism, 
+-- it allows us to use the same function for different types, we want to be able to compare two BSTs
 
 -- --defining the empty binary search tree
 emptyBST :: BST key value
 emptyBST = Empty
 -- as we defined a binary search tree as either Empty or Node,
 -- we can create an empty binary search tree by simply returning an "Empty" tree
+
+--insert an entry 
+insert :: (Ord key) => key -> value -> BST key value -> BST key value
+
+
 
 -- example tree
 -- treeWithNodes :: BST Int String

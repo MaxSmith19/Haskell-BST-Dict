@@ -30,3 +30,16 @@ testTreeWithNodes = TestCase (assertEqual "Creates a tree with nodes" expectedTr
         expectedTree = Node 2 "B"
                         (Node 1 "A" Empty Empty) -- left
                         (Node 3 "C" Empty Empty) -- right
+
+testTreeInsertion :: Test
+testTreeInsertion = TestCase (assertEqual "Inserts a node into a tree" expectedTree (treeWithNodes :: BST Int String))
+    where 
+        treeWithNodes = Node 2 "B"
+                        (Node 1 "A" Empty Empty) -- left
+
+        insertedTree = insert 3 "C" treeWithNodes 
+        
+        expectedTree = Node 2 "B"
+                        (Node 1 "A" Empty Empty) -- left
+                        (Node 3 "C" Empty Empty) -- right
+                        
