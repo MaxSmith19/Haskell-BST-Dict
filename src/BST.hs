@@ -17,10 +17,19 @@ module BST where
 
 
 -- defining the Binary search tree data structure
-data BST k v = Empty | Node k v (BST k v) (BST k v) deriving (Show, Eq)
+data BST key value = Empty 
+    | Node key value (BST key value) (BST key value) deriving (Show, Eq)
 -- The BST can either be created with nothing (Empty)
 -- or it can be created with a key, value, and two BSTs (Node)
 
 -- --defining the empty binary search tree
-emptyBST :: BST k v
+emptyBST :: BST key value
 emptyBST = Empty
+-- as we defined a binary search tree as either Empty or Node,
+-- we can create an empty binary search tree by simply returning an "Empty" tree
+
+-- example tree
+-- treeWithNodes :: BST Int String
+-- treeWithNodes = Node 2 "B"
+--                 (Node 1 "A" Empty Empty) -- left
+--                 (Node 3 "C" Empty Empty) -- right
