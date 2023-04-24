@@ -35,7 +35,8 @@ allTests = TestList [
     testTreeInsertionRoot,
     testTreeInsertionFurther,
     testTreeLookup,
-    testTreeFalseLookup
+    testTreeFalseLookup,
+    testTreeOrderedList
     ]
 
 
@@ -100,3 +101,9 @@ testTreeFalseLookup = TestCase (assertEqual "Looks up a node that is not in the 
                         (Node 5 "D"
                          (Node 4 "C" Empty Empty)
                          (Node 6 "E" Empty Empty)) -- right
+
+--test that checks the list of nodes is in order
+testTreeOrderedList :: Test
+testTreeOrderedList = TestCase (assertEqual "Checks the list of nodes is in order" expectedList (treeToList largerTreeWithNodes))
+    where
+        expectedList = [1,2,3,4,5,7]
