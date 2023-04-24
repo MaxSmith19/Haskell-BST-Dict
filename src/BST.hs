@@ -21,6 +21,6 @@ data BST k v = Empty | Node k v (BST k v) (BST k v) deriving (Show, Eq)
 -- The BST can either be created with nothing (Empty)
 -- or it can be created with a key, value, and two BSTs (Node)
 
-
 -- --defining the empty binary search tree
 emptyBST :: BST k v
+emptyBST = Empty
