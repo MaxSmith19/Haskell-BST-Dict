@@ -46,6 +46,15 @@ treeLookup k (Node keyToFind valueToFind left right)
     | k < keyToFind = treeLookup k left
     | k > keyToFind = treeLookup k right
 
+treeToList :: BST Int String -> [(Int, String)]
+treeToList Empty = []
+treeToList (Node key value left right) = 
+    let 
+        leftList = treeToList left
+        rightList = treeToList right
+    in
+        leftList ++ [(key, value)] ++ rightList
+        
 
 -- example tree
 -- treeWithNodes :: BST Int String

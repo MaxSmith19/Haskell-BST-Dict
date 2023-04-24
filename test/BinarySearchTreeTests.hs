@@ -7,7 +7,7 @@ treeWithNodes:: BST Int String
 treeWithNodes = Node 2 "B"
                         (Node 1 "A" Empty Empty) -- left
                         Empty -- right
-
+largerTreeWithNodes :: BST Int String
 largerTreeWithNodes = Node 4 "D"
                         (Node 2 "B" 
                             (Node 1 "A" Empty Empty) -- left
@@ -17,7 +17,23 @@ largerTreeWithNodes = Node 4 "D"
                             (Node 5 "F" Empty Empty) -- left
                             Empty -- right
                         )
-
+hugeTreeWithNodes :: BST Int String
+hugeTreeWithNodes = Node 6 "Eren"
+                        (Node 3 "Claire"
+                            (Node 2 "Ben"
+                                (Node 1 "Ashleigh" Empty Empty) -- left
+                                Empty -- right
+                            )
+                            (Node 4 "Dave" Empty Empty) -- right
+                        )
+                        (Node 9 "Henry"
+                            (Node 8 "Gertrude"
+                                (Node 7 "Frank" Empty Empty) -- left
+                                Empty -- right
+                            )
+                            (Node 10 "Italy" Empty Empty) -- right
+                        )
+                    
 
 
 main :: IO()
@@ -35,7 +51,8 @@ allTests = TestList [
     testTreeInsertionFurther,
     testTreeLookup,
     testTreeFalseLookup,
-    testTreeOrderedList
+    testTreeOrderedList,
+    testTreeOrderedListLarger
     ]
 
 
@@ -110,3 +127,8 @@ testTreeOrderedList :: Test
 testTreeOrderedList = TestCase (assertEqual "Checks the list of nodes is in order" expectedList (treeToList largerTreeWithNodes))
     where
         expectedList = [(1,"A"),(2,"B"),(3,"C"),(4,"D"),(5,"F"),(7,"G")]
+
+testTreeOrderedListLarger :: Test
+testTreeOrderedListLarger = TestCase (assertEqual "Checks the list of nodes is in order" expectedList (treeToList hugeTreeWithNodes))
+    where
+        expectedList = [(1,"Ashleigh"),(2,"Ben"),(3,"Claire"),(4,"Dave"),(6,"Eren"),(7,"Frank"),(8,"Gertrude"),(9,"Henry"),(10,"Italy")]
