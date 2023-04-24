@@ -8,6 +8,19 @@ treeWithNodes = Node 2 "B"
                         (Node 1 "A" Empty Empty) -- left
                         Empty -- right
 
+largerTreeWithNodes :: BST Int String
+largerTreeWithNodes = Node 3 "C"
+                        (Node 2 "B" 
+                            (Node 1 "A" Empty Empty) -- left
+                            Empty -- right
+                        )
+                        (Node 4 "D" 
+                        (Node 5 "F" Empty Empty)
+                        (Node 7 "G" Empty Empty)
+                        ) -- Right
+
+
+
 main :: IO()
 main = do
     runTestTT allTests
@@ -19,23 +32,25 @@ allTests = TestList [
     testEmptyTree,
     testTreeWithNodes,
     testTreeInsertion,
+    testTreeInsertionRoot,
+    testTreeInsertionFurther,
     testTreeLookup,
     testTreeFalseLookup
     ]
 
 
--- test for a binary search tree
+-- CREATING A TREE TESTS
 testEmptyTree :: Test
 testEmptyTree = TestCase (assertEqual "Creates an empty tree" Empty (emptyBST :: BST Int String))
 
---test for a tree with nodes 
+ 
 testTreeWithNodes :: Test
 testTreeWithNodes = TestCase (assertEqual "Creates a tree with nodes" expectedTree (treeWithNodes :: BST Int String))
     where 
         expectedTree = Node 2 "B"
                         (Node 1 "A" Empty Empty) -- left
                         Empty -- right
-
+-- INSERTION TESTS
 testTreeInsertion :: Test
 testTreeInsertion = TestCase (assertEqual "Inserts a node into a tree" expectedTree (insertedTree :: BST Int String))
     where 
@@ -45,6 +60,29 @@ testTreeInsertion = TestCase (assertEqual "Inserts a node into a tree" expectedT
                         (Node 1 "A" Empty Empty) -- left
                         (Node 3 "C" Empty Empty) -- right
 
+testTreeInsertionRoot :: Test
+testTreeInsertionRoot = TestCase(assertEqual "Inserts the root node into an empty tree" expectedTree(insertedTree :: BST Int String))
+    where
+        insertedTree = insert 2 "B" emptyBST
+
+        expectedTree = Node 2 "B" Empty Empty
+
+testTreeInsertionFurther :: Test  
+testTreeInsertionFurther = TestCase(assertEqual "Inserts a node further into a tree" expectedTree(insertedTree :: BST Int String))
+    where
+        
+        insertedTree = insert 6 "newItem" largerTreeWithNodes
+
+        expectedTree = Node 3 "C"
+                        (Node 2 "B" 
+                            (Node 1 "A" Empty Empty) -- left
+                            Empty -- right
+                        )
+                        (Node 4 "D" 
+                        (Node 5 "F" Empty Empty)
+                        (Node 7 "G" (Node 6 "newItem" Empty Empty) Empty)
+                        ) -- Right
+-- LOOKUP TESTS                        
 testTreeLookup :: Test
 testTreeLookup = TestCase (assertEqual "Looks up a node in a tree" True (treeLookup 4 treeToLookup))
     where
