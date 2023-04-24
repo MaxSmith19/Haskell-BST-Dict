@@ -8,16 +8,15 @@ treeWithNodes = Node 2 "B"
                         (Node 1 "A" Empty Empty) -- left
                         Empty -- right
 
-largerTreeWithNodes :: BST Int String
-largerTreeWithNodes = Node 3 "C"
+largerTreeWithNodes = Node 4 "D"
                         (Node 2 "B" 
                             (Node 1 "A" Empty Empty) -- left
+                            (Node 3 "C" Empty Empty) -- right
+                        )
+                        (Node 7 "G" 
+                            (Node 5 "F" Empty Empty) -- left
                             Empty -- right
                         )
-                        (Node 4 "D" 
-                        (Node 5 "F" Empty Empty)
-                        (Node 7 "G" Empty Empty)
-                        ) -- Right
 
 
 
@@ -74,15 +73,19 @@ testTreeInsertionFurther = TestCase(assertEqual "Inserts a node further into a t
         
         insertedTree = insert 6 "newItem" largerTreeWithNodes
 
-        expectedTree = Node 3 "C"
+        expectedTree = Node 4 "D"
                         (Node 2 "B" 
                             (Node 1 "A" Empty Empty) -- left
-                            Empty -- right
+                            (Node 3 "C" Empty Empty) -- right
                         )
-                        (Node 4 "D" 
-                        (Node 5 "F" Empty Empty)
-                        (Node 7 "G" (Node 6 "newItem" Empty Empty) Empty)
-                        ) -- Right
+                        (Node 7 "G" 
+                            (Node 5 "F"
+                             Empty --left
+                            (Node 6 "newItem" Empty Empty) -- right
+                            ) -- left
+                            Empty
+                        )
+
 -- LOOKUP TESTS                        
 testTreeLookup :: Test
 testTreeLookup = TestCase (assertEqual "Looks up a node in a tree" True (treeLookup 4 treeToLookup))
@@ -106,4 +109,4 @@ testTreeFalseLookup = TestCase (assertEqual "Looks up a node that is not in the 
 testTreeOrderedList :: Test
 testTreeOrderedList = TestCase (assertEqual "Checks the list of nodes is in order" expectedList (treeToList largerTreeWithNodes))
     where
-        expectedList = [1,2,3,4,5,7]
+        expectedList = [(1,"A"),(2,"B"),(3,"C"),(4,"D"),(5,"F"),(7,"G")]
