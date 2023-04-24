@@ -33,10 +33,12 @@ emptyBST = Empty
 --insert an entry 
 insert :: Int -> String -> BST Int String -> BST Int String
 insert k v Empty = Node k v Empty Empty
-insert k v (Node k' v' left right)
-    | k == k' = Node k' v left right
-    | k < k' = Node k' v' (insert k v left) right
-    | k > k' = Node k' v' left (insert k v right)
+insert k v (Node keyToFind valueToFind left right)
+    | k == keyToFind = Node keyToFind v left right
+    | k < keyToFind = Node keyToFind valueToFind (insert k v left) right
+    | k > keyToFind = Node keyToFind valueToFind left (insert k v right)
+
+lookup :: Int -> BST Int String -> Bool
 
 
 -- example tree

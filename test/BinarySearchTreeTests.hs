@@ -3,6 +3,11 @@ module BinarySearchTreeTests where
 import Test.HUnit
 import BST
 
+treeWithNodes:: BST Int String
+treeWithNodes = Node 2 "B"
+                        (Node 1 "A" Empty Empty) -- left
+                        Empty -- right
+
 main :: IO()
 main = do
     runTestTT allTests
@@ -25,22 +30,19 @@ testEmptyTree = TestCase (assertEqual "Creates an empty tree" Empty (emptyBST ::
 testTreeWithNodes :: Test
 testTreeWithNodes = TestCase (assertEqual "Creates a tree with nodes" expectedTree (treeWithNodes :: BST Int String))
     where 
-        treeWithNodes = Node 2 "B"
-                        (Node 1 "A" Empty Empty) -- left
-                        (Node 3 "C" Empty Empty) -- right
         expectedTree = Node 2 "B"
                         (Node 1 "A" Empty Empty) -- left
-                        (Node 3 "C" Empty Empty) -- right
+                        Empty -- right
 
 testTreeInsertion :: Test
 testTreeInsertion = TestCase (assertEqual "Inserts a node into a tree" expectedTree (insertedTree :: BST Int String))
     where 
-        treeWithNodes = Node 2 "B"
-                        (Node 1 "A" Empty Empty) -- left
-                        Empty -- right
-
         insertedTree = insert 3 "C" treeWithNodes 
         
         expectedTree = Node 2 "B"
                         (Node 1 "A" Empty Empty) -- left
                         (Node 3 "C" Empty Empty) -- right
+
+testTreeLookup :: Test
+testTreeLookup = TestCase (assertEqual "Looks up a node in a tree" False (BST.lookup 5 treeWithNodes))
+
