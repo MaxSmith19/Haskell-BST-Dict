@@ -18,7 +18,9 @@ allTests :: Test
 allTests = TestList [
     testEmptyTree,
     testTreeWithNodes,
-    testTreeInsertion
+    testTreeInsertion,
+    testTreeLookup,
+    testTreeFalseLookup
     ]
 
 
@@ -44,5 +46,19 @@ testTreeInsertion = TestCase (assertEqual "Inserts a node into a tree" expectedT
                         (Node 3 "C" Empty Empty) -- right
 
 testTreeLookup :: Test
-testTreeLookup = TestCase (assertEqual "Looks up a node in a tree" False (BST.lookup 5 treeWithNodes))
+testTreeLookup = TestCase (assertEqual "Looks up a node in a tree" True (treeLookup 4 treeToLookup))
+    where
+        treeToLookup = Node 2 "B"
+                        (Node 1 "A" Empty Empty) -- left
+                        (Node 5 "D"
+                         (Node 4 "C" Empty Empty)
+                         (Node 6 "E" Empty Empty)) -- right
 
+testTreeFalseLookup :: Test
+testTreeFalseLookup = TestCase (assertEqual "Looks up a node that is not in the tree" False (treeLookup 20 treeToLookup))
+    where
+        treeToLookup = Node 2 "B"
+                        (Node 1 "A" Empty Empty) -- left
+                        (Node 5 "D"
+                         (Node 4 "C" Empty Empty)
+                         (Node 6 "E" Empty Empty)) -- right
