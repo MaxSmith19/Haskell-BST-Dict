@@ -52,6 +52,7 @@ test-suite CW2-ASE-test
   type: exitcode-stdio-1.0
   main-is: Spec.hs
   other-modules:
+      BinarySearchTreeTests
       Paths_CW2_ASE
   hs-source-dirs:
       test
