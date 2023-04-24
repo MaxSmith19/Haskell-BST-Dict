@@ -24,7 +24,7 @@ data BST key value = Empty
 -- deriving is a method of polymorphism, 
 -- it allows us to use the same function for different types, we want to be able to compare two BSTs
 
--- --defining the empty binary search tree
+-- create an empty dictionary
 emptyBST :: BST Int String
 emptyBST = Empty
 -- as we defined a binary search tree as either Empty or Node,
@@ -32,18 +32,20 @@ emptyBST = Empty
 
 --insert an entry 
 insert :: Int -> String -> BST Int String -> BST Int String
-insert k v Empty = Node k v Empty Empty
-insert k v (Node keyToAdd valueToAdd left right)
+insert k v Empty = Node k v Empty Empty -- if empty, create a new node
+insert k v (Node keyToAdd valueToAdd left right) -- if not empty, add to the tree
     | k == keyToAdd = Node keyToAdd v left right
     | k < keyToAdd = Node keyToAdd valueToAdd (insert k v left) right
     | k > keyToAdd = Node keyToAdd valueToAdd left (insert k v right)
 
+--lookup the item by specifying a key
 treeLookup :: Int -> BST Int String -> Bool
-treeLookup k Empty = False
-treeLookup k (Node keyToFind valueToFind left right)
+treeLookup k Empty = False -- if empty, return false
+treeLookup k (Node keyToFind valueToFind left right) 
     | k == keyToFind = True
     | k < keyToFind = treeLookup k left
     | k > keyToFind = treeLookup k right
+
 
 -- example tree
 -- treeWithNodes :: BST Int String
