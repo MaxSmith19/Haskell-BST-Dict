@@ -7,6 +7,7 @@ treeWithNodes:: BST Int String
 treeWithNodes = Node 2 "B"
                         (Node 1 "A" Empty Empty) -- left
                         Empty -- right
+
 largerTreeWithNodes :: BST Int String
 largerTreeWithNodes = Node 4 "D"
                         (Node 2 "B" 
@@ -17,6 +18,7 @@ largerTreeWithNodes = Node 4 "D"
                             (Node 5 "F" Empty Empty) -- left
                             Empty -- right
                         )
+
 hugeTreeWithNodes :: BST Int String
 hugeTreeWithNodes = Node 6 "Eren"
                         (Node 3 "Claire"
@@ -52,7 +54,11 @@ allTests = TestList [
     testTreeLookup,
     testTreeFalseLookup,
     testTreeOrderedList,
-    testTreeOrderedListLarger
+    testTreeOrderedListLarger,
+    testTreeNodeRemoval,
+    testTreeNodeRemoveNoChildren,
+    testTreeNodeRemoveOneChild
+    
     ]
 
 
@@ -122,7 +128,7 @@ testTreeFalseLookup = TestCase (assertEqual "Looks up a node that is not in the 
                          (Node 4 "C" Empty Empty)
                          (Node 6 "E" Empty Empty)) -- right
 
---test that checks the list of nodes is in order
+--ORDER TESTS
 testTreeOrderedList :: Test
 testTreeOrderedList = TestCase (assertEqual "Checks the list of nodes is in order" expectedList (treeToList largerTreeWithNodes))
     where
@@ -133,7 +139,18 @@ testTreeOrderedListLarger = TestCase (assertEqual "Checks the list of nodes is i
     where
         expectedList = [(1,"Ashleigh"),(2,"Ben"),(3,"Claire"),(4,"Dave"),(6,"Eren"),(7,"Frank"),(8,"Gertrude"),(9,"Henry"),(10,"Italy")]
 
+--REMOVAL TESTS
 testTreeNodeRemoval :: Test
 testTreeNodeRemoval = TestCase (assertEqual "Removes a node from a tree" expectedTree (treeToList (remove 1 treeWithNodes)))
     where
         expectedTree = [(2,"B")]
+
+testTreeNodeRemoveNoChildren :: Test
+testTreeNodeRemoveNoChildren = TestCase (assertEqual "Removes a node from a tree" expectedTree (treeToList (remove 1 hugeTreeWithNodes)))
+    where
+        expectedTree = [(2,"Ben"),(3,"Claire"),(4,"Dave"),(6,"Eren"),(7,"Frank"),(8,"Gertrude"),(9,"Henry"),(10,"Italy")]
+
+testTreeNodeRemoveOneChild :: Test
+testTreeNodeRemoveOneChild = TestCase (assertEqual "Removes a node from a tree" expectedTree (treeToList (remove 2 hugeTreeWithNodes)))
+    where
+        expectedTree = [(1,"Ashleigh"),(3,"Claire"),(4,"Dave"),(6,"Eren"),(7,"Frank"),(8,"Gertrude"),(9,"Henry"),(10,"Italy")]

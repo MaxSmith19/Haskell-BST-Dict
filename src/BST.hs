@@ -55,6 +55,27 @@ treeToList (Node key value left right) =
     in
         leftList ++ [(key, value)] ++ rightList
         
+-- remove an entry from the tree by specifying the key
+remove :: Int -> BST Int String -> BST Int String
+remove k Empty = Empty
+remove k (Node key value left right)
+    | k < key = Node key value (remove k left) right
+    | k > key = Node key value left (remove k right)
+    | otherwise = case (left, right) of
+        (Empty, Empty) -> Empty -- if both are empty, return empty
+        (Empty, _) -> right -- if left parent is empty, replace it with the right parent
+        (_, Empty) -> left -- if right parent is empty, replace it with the left parent
+        (_, _) -> Node minKey minValue left (remove minKey right)
+            where -- if both are not empty, replace the node with the minimum value of the right subtree
+                (minKey, minValue) = findMin right
+
+findMin :: BST k v -> (k, v) -- find the minimum value of the tree
+findMin (Node k v Empty _) = (k, v) -- if the left node is empty, return the current node
+findMin (Node _ _ left _) = findMin left -- if the left node is not empty, recursively go to the left node
+
+
+
+
 
 -- example tree
 -- treeWithNodes :: BST Int String
