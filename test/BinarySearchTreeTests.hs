@@ -4,6 +4,12 @@ import Test.HUnit
 
 import BST
 
+isEven :: Int -> Bool
+isEven k = k `mod` 2 == 0
+
+isOdd :: Int -> Bool
+isOdd k = k `mod` 2 /= 0
+
 treeWithNodes:: BST Int String
 treeWithNodes = Node 2 "B"
                         (Node 1 "A" Empty Empty) -- left
@@ -227,3 +233,13 @@ testTreeRemoveRootNode :: Test
 testTreeRemoveRootNode = TestCase (assertEqual "Removes the root node from a tree" expectedTree (treeToList (remove 4 hugeTreeWithNodes)))
     where
         expectedTree = [(1,"Ashleigh"),(2,"Ben"),(3,"Claire"),(6,"Eren"),(7,"Frank"),(8,"Gertrude"),(9,"Henry"),(10,"Italy")]
+
+testTreeRemoveIfOdd :: Test
+testTreeRemoveIfOdd = TestCase (assertEqual "Removes all nodes with odd keys from a tree" expectedTree (treeToList (removeIf isOdd hugeTreeWithNodes)))
+    where
+        expectedTree = [(2,"Ben"),(4,"Dave"),(6,"Eren"),(8,"Gertrude"),(10,"Italy")]
+
+testTreeRemoveIfEven :: Test
+testTreeRemoveIfEven = TestCase (assertEqual "Removes all nodes with even keys from a tree" expectedTree (treeToList (removeIf isEven hugeTreeWithNodes)))
+    where
+        expectedTree = [(1,"Ashleigh"),(3,"Claire"),(7,"Frank"),(9,"Henry")]

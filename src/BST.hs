@@ -74,6 +74,9 @@ findMin :: BST k v -> (k, v) -- find the minimum value of the tree
 findMin (Node k v Empty _) = (k, v) -- if the left node is empty, return the current node
 findMin (Node _ _ left _) = findMin left -- if the left node is not empty, recursively go to the left node
 
+-- remove all entries that satisfy a specified predicate function
+removeIf :: (Int -> Bool) -> BST Int String -> BST Int String
+
 
 
 -- example tree
