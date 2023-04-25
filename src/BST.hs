@@ -75,9 +75,12 @@ findMin (Node k v Empty _) = (k, v) -- if the left node is empty, return the cur
 findMin (Node _ _ left _) = findMin left -- if the left node is not empty, recursively go to the left node
 
 -- remove all entries that satisfy a specified predicate function
+-- like being even or odd
 removeIf :: (Int -> Bool) -> BST Int String -> BST Int String
-
-
+removeIf _ Empty = Empty -- if empty, return empty (base case)
+removeIf predicate (Node key value left right) -- if not empty, check if the predicate is true
+    | predicate key = remove key (Node key value (removeIf predicate left) (removeIf predicate right)) -- if true, remove the node
+    | otherwise = Node key value (removeIf predicate left) (removeIf predicate right) -- if false, keep the node
 
 -- example tree
 -- treeWithNodes :: BST Int String

@@ -54,6 +54,7 @@ allSuites = do
     _ <- runTestTT insertionTests
     _ <- runTestTT orderedTests
     _ <- runTestTT removeTests
+    _ <- runTestTT removeIfTests
     return ()
 
 
@@ -93,7 +94,13 @@ removeTests = TestList [
     testTreeNodeRemoveParentOfTwo,
     testTreeRemoveRootNode
     ]
-
+removeIfTests :: Test
+removeIfTests = TestList [
+    testTreeRemoveIfOdd,
+    testTreeRemoveIfEven,
+    testTreeRemoveAll,
+    testTreeRemoveNone
+    ]
 -- CREATING A TREE TESTS
 testEmptyTree :: Test
 testEmptyTree = TestCase (assertEqual "Creates an empty tree" Empty (emptyBST :: BST Int String))
@@ -243,3 +250,13 @@ testTreeRemoveIfEven :: Test
 testTreeRemoveIfEven = TestCase (assertEqual "Removes all nodes with even keys from a tree" expectedTree (treeToList (removeIf isEven hugeTreeWithNodes)))
     where
         expectedTree = [(1,"Ashleigh"),(3,"Claire"),(7,"Frank"),(9,"Henry")]
+
+testTreeRemoveAll :: Test
+testTreeRemoveAll = TestCase (assertEqual "Removes all nodes from a tree" expectedTree (treeToList (removeIf (const True) hugeTreeWithNodes)))
+    where
+        expectedTree = []
+
+testTreeRemoveNone :: Test
+testTreeRemoveNone = TestCase (assertEqual "Removes no nodes from a tree" expectedTree (treeToList (removeIf (const False) hugeTreeWithNodes)))
+    where
+        expectedTree = treeToList hugeTreeWithNodes
