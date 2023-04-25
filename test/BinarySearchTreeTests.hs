@@ -1,6 +1,8 @@
+{-# OPTIONS_GHC -Wno-unused-do-bind #-}
 module BinarySearchTreeTests where
 
 import Test.HUnit
+
 import BST
 
 treeWithNodes:: BST Int String
@@ -39,28 +41,53 @@ hugeTreeWithNodes = Node 6 "Eren"
 
 
 main :: IO()
-main = do
-    runTestTT allTests
-    return()
+main = allSuites
+
+allSuites :: IO ()
+allSuites = do
+    _ <- runTestTT constructTests
+    _ <- runTestTT insertionTests
+    _ <- runTestTT orderedTests
+    _ <- runTestTT removeTests
+    return ()
 
 
-allTests :: Test
-allTests = TestList [
+
+constructTests :: Test
+constructTests = TestList [
     testEmptyTree,
-    testTreeWithNodes,
-    testTreeInsertion,
-    testTreeInsertionRoot,
-    testTreeInsertionFurther,
-    testTreeLookup,
-    testTreeFalseLookup,
-    testTreeOrderedList,
-    testTreeOrderedListLarger,
-    testTreeNodeRemoval,
-    testTreeNodeRemoveNoChildren,
-    testTreeNodeRemoveOneChild
-    
+    testTreeWithNodes
     ]
 
+insertionTests :: Test
+insertionTests = TestList [
+    testTreeInsertion,
+    testTreeInsertionRoot,
+    testTreeInsertionDeeper,
+    testTreeInsertDuplicate,
+    testTreeInsertNegativeKey
+    ]
+lookupTests :: Test
+lookupTests = TestList [
+    testTreeLookup,
+    testTreeFalseLookup,
+    testTreeEmptyLookup
+    ]
+    
+orderedTests :: Test
+orderedTests = TestList [
+    testTreeOrderedList,
+    testTreeOrderedListLarger
+    ]
+
+removeTests :: Test
+removeTests = TestList [
+    testTreeNodeRemoval,
+    testTreeNodeRemoveLeaf,
+    testTreeNodeRemoveOneChild,
+    testTreeNodeRemoveParentOfTwo,
+    testTreeRemoveRootNode
+    ]
 
 -- CREATING A TREE TESTS
 testEmptyTree :: Test
@@ -90,8 +117,8 @@ testTreeInsertionRoot = TestCase(assertEqual "Inserts the root node into an empt
 
         expectedTree = Node 2 "B" Empty Empty
 
-testTreeInsertionFurther :: Test  
-testTreeInsertionFurther = TestCase(assertEqual "Inserts a node further into a tree" expectedTree(insertedTree :: BST Int String))
+testTreeInsertionDeeper :: Test  
+testTreeInsertionDeeper = TestCase(assertEqual "Inserts a node Deeper into a tree" expectedTree(insertedTree :: BST Int String))
     where
         
         insertedTree = insert 6 "newItem" largerTreeWithNodes
@@ -109,6 +136,40 @@ testTreeInsertionFurther = TestCase(assertEqual "Inserts a node further into a t
                             Empty
                         )
 
+testTreeInsertDuplicate :: Test
+testTreeInsertDuplicate = TestCase(assertEqual "Inserts a duplicate node into a tree" expectedTree(insertedTree :: BST Int String))
+    where
+        
+        insertedTree = insert 2 "newItem" largerTreeWithNodes
+
+        expectedTree = Node 4 "D"
+                        (Node 2 "newItem" 
+                            (Node 1 "A" Empty Empty) -- left
+                            (Node 3 "C" Empty Empty) -- right
+                        )
+                        (Node 7 "G" 
+                            (Node 5 "F" Empty Empty) -- left
+                            Empty -- right
+                        )
+
+testTreeInsertNegativeKey :: Test
+testTreeInsertNegativeKey = TestCase(assertEqual "Inserts a node with a negative key into a tree" expectedTree(insertedTree :: BST Int String))
+    where
+        
+        insertedTree = insert (-1) "newItem" largerTreeWithNodes
+
+        expectedTree = Node 4 "D"
+                        (Node 2 "B" 
+                            (Node 1 "A" 
+                                (Node (-1) "newItem" Empty Empty) -- left
+                                Empty -- right
+                            )
+                            (Node 3 "C" Empty Empty) -- right
+                        )
+                        (Node 7 "G" 
+                            (Node 5 "F" Empty Empty) -- left
+                            Empty -- right
+                        )
 -- LOOKUP TESTS                        
 testTreeLookup :: Test
 testTreeLookup = TestCase (assertEqual "Looks up a node in a tree" True (treeLookup 4 treeToLookup))
@@ -128,6 +189,9 @@ testTreeFalseLookup = TestCase (assertEqual "Looks up a node that is not in the 
                          (Node 4 "C" Empty Empty)
                          (Node 6 "E" Empty Empty)) -- right
 
+testTreeEmptyLookup :: Test
+testTreeEmptyLookup = TestCase (assertEqual "Looks up a node in an empty tree" False (treeLookup 20 emptyBST))
+
 --ORDER TESTS
 testTreeOrderedList :: Test
 testTreeOrderedList = TestCase (assertEqual "Checks the list of nodes is in order" expectedList (treeToList largerTreeWithNodes))
@@ -145,12 +209,22 @@ testTreeNodeRemoval = TestCase (assertEqual "Removes a node from a tree" expecte
     where
         expectedTree = [(2,"B")]
 
-testTreeNodeRemoveNoChildren :: Test
-testTreeNodeRemoveNoChildren = TestCase (assertEqual "Removes a node from a tree" expectedTree (treeToList (remove 1 hugeTreeWithNodes)))
+testTreeNodeRemoveLeaf :: Test
+testTreeNodeRemoveLeaf = TestCase (assertEqual "Removes a child node from a tree" expectedTree (treeToList (remove 1 hugeTreeWithNodes)))
     where
         expectedTree = [(2,"Ben"),(3,"Claire"),(4,"Dave"),(6,"Eren"),(7,"Frank"),(8,"Gertrude"),(9,"Henry"),(10,"Italy")]
 
 testTreeNodeRemoveOneChild :: Test
-testTreeNodeRemoveOneChild = TestCase (assertEqual "Removes a node from a tree" expectedTree (treeToList (remove 2 hugeTreeWithNodes)))
+testTreeNodeRemoveOneChild = TestCase (assertEqual "Removes a child node from a tree" expectedTree (treeToList (remove 2 hugeTreeWithNodes)))
     where
         expectedTree = [(1,"Ashleigh"),(3,"Claire"),(4,"Dave"),(6,"Eren"),(7,"Frank"),(8,"Gertrude"),(9,"Henry"),(10,"Italy")]
+
+testTreeNodeRemoveParentOfTwo :: Test
+testTreeNodeRemoveParentOfTwo = TestCase (assertEqual "Removes a parent node from a tree" expectedTree (treeToList (remove 3 hugeTreeWithNodes)))
+    where
+        expectedTree = [(1,"Ashleigh"),(2,"Ben"),(4,"Dave"),(6,"Eren"),(7,"Frank"),(8,"Gertrude"),(9,"Henry"),(10,"Italy")]
+
+testTreeRemoveRootNode :: Test
+testTreeRemoveRootNode = TestCase (assertEqual "Removes the root node from a tree" expectedTree (treeToList (remove 4 hugeTreeWithNodes)))
+    where
+        expectedTree = [(1,"Ashleigh"),(2,"Ben"),(3,"Claire"),(6,"Eren"),(7,"Frank"),(8,"Gertrude"),(9,"Henry"),(10,"Italy")]

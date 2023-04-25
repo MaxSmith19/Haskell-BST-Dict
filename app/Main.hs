@@ -4,4 +4,6 @@ import Lib
 import BST
 
 main :: IO ()
-main = print (sqr 5)
+main = do
+    print(" Hello World")
+    return()

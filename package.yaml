@@ -59,3 +59,4 @@ tests:
     dependencies:
     - CW2-ASE
     - HUnit
+    - QuickCheck

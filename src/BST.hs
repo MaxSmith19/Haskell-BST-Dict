@@ -46,6 +46,7 @@ treeLookup k (Node keyToFind valueToFind left right)
     | k < keyToFind = treeLookup k left
     | k > keyToFind = treeLookup k right
 
+-- produce an ordered list of all entries (as pairs in a list data structure)
 treeToList :: BST Int String -> [(Int, String)]
 treeToList Empty = []
 treeToList (Node key value left right) = 
@@ -72,8 +73,6 @@ remove k (Node key value left right)
 findMin :: BST k v -> (k, v) -- find the minimum value of the tree
 findMin (Node k v Empty _) = (k, v) -- if the left node is empty, return the current node
 findMin (Node _ _ left _) = findMin left -- if the left node is not empty, recursively go to the left node
-
-
 
 
 
