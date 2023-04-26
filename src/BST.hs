@@ -109,6 +109,9 @@ rotateLeft (Node k v left right) = Node k v (rotateLeft left) right
 
 rotateRight :: BST k v -> BST k v
 rotateRight Empty = Empty
+rotateRight (Node k v (Node rotatedK rotatedV rotatedL rotatedR) right) = Node rotatedK rotatedV rotatedL (Node k v rotatedR right)
+rotateRight (Node k v left right) = Node k v left (rotateRight right)
+
 
 -- example tree
 -- treeWithNodes :: BST Int String

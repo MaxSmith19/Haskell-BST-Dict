@@ -262,6 +262,7 @@ testTreeRemoveRootNode = TestCase (assertEqual "Removes the root node from a tre
     where
         expectedTree = [(1,"Ashleigh"),(2,"Ben"),(3,"Claire"),(6,"Eren"),(7,"Frank"),(8,"Gertrude"),(9,"Henry"),(10,"Italy")]
 
+-- REMOVE IF TESTS
 testTreeRemoveIfOdd :: Test
 testTreeRemoveIfOdd = TestCase (assertEqual "Removes all nodes with odd keys from a tree" expectedTree (treeToList (removeIf isOdd hugeTreeWithNodes)))
     where
@@ -282,6 +283,7 @@ testTreeRemoveNone = TestCase (assertEqual "Removes no nodes from a tree" expect
     where
         expectedTree = treeToList hugeTreeWithNodes
 
+-- HEIGHT TESTS
 testTreeHeight :: Test
 testTreeHeight = TestCase (assertEqual "Checks the height of a tree" expectedHeight (treeHeight hugeTreeWithNodes))
     where
@@ -336,4 +338,25 @@ testTreeRotateRight = TestCase (assertEqual "Checks the tree is rotated right" e
                         (Node 5 "F" Empty Empty)
                     Empty))
 
-        
+-- Property Tests
+-- propertyTests :: IO ()
+-- propertyTests = do
+--     quickCheck prop_insertLookup
+--     quickCheck prop_insertRemove
+
+
+-- instance (Ord key, Arbitrary key, Arbitrary value) => Arbitrary (BST key value) where
+--     arbitrary = oneof [return Empty, createNode]
+--       where
+--         createNode = do
+--           key <- arbitrary
+--           value <- arbitrary
+--           left <- arbitrary
+--           right <- arbitrary
+--           return $ Node key value left right
+
+-- prop_insertLookup :: Int -> String -> BST Int String -> Bool
+-- prop_insertLookup k v tree = treeLookup k (insert k v tree)
+
+-- prop_insertRemove :: Int -> String -> BST Int String -> Bool
+-- prop_insertRemove k v tree = remove k (insert k v tree) == tree
