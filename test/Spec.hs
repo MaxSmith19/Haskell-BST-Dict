@@ -311,16 +311,18 @@ testTreeRemoveHeightChange = TestCase (assertEqual "Checks the height of a tree 
 
 --rotation tests
 testTreeRotateLeft :: Test
-testTreeRotateLeft = TestCase (assertEqual "Checks the tree is rotated left" expectedTree (treeToList (rotateLeft treeToRotate)))
+testTreeRotateLeft = TestCase (assertEqual "Checks the tree is rotated left" expectedTree (rotateLeft largerTreeWithNodes))
     where
-        treeToRotate = Node 3 "C"
-                        (Node 2 "B"
-                         (Node 1 "A" Empty Empty)
-                         Empty)
-                        (Node 4 "D" Empty Empty)
+        expectedTree = Node 7 "G"
+                        (Node 4 "D"
+                            (Node 2 "B"
+                                (Node 1 "A" Empty Empty)
+                                (Node 3 "C" Empty Empty)
+                            )
+                            (Node 5 "F" Empty Empty)
+                        )
+                        Empty
 
-        expectedTree = Node 2 "B"
-                        (Node 1 "A" Empty Empty)
-                        (Node 3 "C"
-                         Empty
-                         (Node 4 "D" Empty Empty))
+
+
+        

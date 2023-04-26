@@ -7,7 +7,8 @@ module BST (
     remove,
     removeIf,
     findMin,
-    treeHeight
+    treeHeight,
+    rotateLeft
 ) where
 
 -- A dictionary data structure contains a collection of key/item pairs, such that each key occurs at-most once,
@@ -102,6 +103,8 @@ treeHeight (Node k v left right) = 1 + max (treeHeight left) (treeHeight right)
 -- Rotate the binary search tree to the left
 rotateLeft :: BST k v -> BST k v
 rotateLeft Empty = Empty
+rotateLeft (Node k v left (Node rotatedK rotatedV rotatedL rotatedR)) = Node rotatedK rotatedV (Node k v left rotatedL) rotatedR
+rotateLeft (Node k v left right) = Node k v (rotateLeft left) right
 
 
 -- example tree
