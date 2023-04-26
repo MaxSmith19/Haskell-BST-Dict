@@ -19,6 +19,12 @@ instance (Arbitrary k, Arbitrary v, Ord k) => Arbitrary (BST k v) where
       keys Empty = []
       keys (Node k _ left right) = k : (keys left ++ keys right)
 
+main :: IO()
+main = do
+  quickCheck prop_insert_lookup
+  quickCheck prop_remove_nonexistent
+  quickCheck prop_lookup_false
+
 -- Inserting a key-value pair into a tree and then looking it up should return True.
 prop_insert_lookup :: Int -> String -> BST Int String -> Bool
 prop_insert_lookup k v tree = treeLookup k (insert k v tree)

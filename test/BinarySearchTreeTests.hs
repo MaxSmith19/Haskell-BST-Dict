@@ -54,6 +54,7 @@ allSuites = do
     _ <- runTestTT orderedTests
     _ <- runTestTT removeTests
     _ <- runTestTT removeIfTests
+    _ <- runTestTT heightTests
     return ()
 
 
@@ -99,6 +100,15 @@ removeIfTests = TestList [
     testTreeRemoveIfEven,
     testTreeRemoveAll,
     testTreeRemoveNone
+    ]
+
+heightTests :: Test
+heightTests = TestList [
+    testTreeHeight,
+    testTreeEmptyHeight,
+    testTreeInsertHeight,
+    testTreeRemoveHeight,
+    testTreeRemoveHeightChange
     ]
 -- CREATING A TREE TESTS
 testEmptyTree :: Test
@@ -265,12 +275,27 @@ testTreeHeight = TestCase (assertEqual "Checks the height of a tree" expectedHei
     where
         expectedHeight = 4
 
-testTreeInsertHeight :: Test
-testTreeInsertHeight = TestCase (assertEqual "Checks the height of a tree after inserting a node" expectedHeight (treeHeight (insert 11 "J" hugeTreeWithNodes)))
+testTreeEmptyHeight :: Test
+testTreeEmptyHeight = TestCase (assertEqual "Checks the height of an empty tree" expectedHeight (treeHeight emptyBST))
     where
-        expectedHeight = 5
+        expectedHeight = 0
+
+testTreeInsertHeight :: Test
+testTreeInsertHeight = TestCase (assertEqual "Checks the height of a tree after inserting a node (should not affect height)" expectedHeight (treeHeight (insert 12 "J" insertTree)))
+    where
+        insertTree = insert 12 "K" hugeTreeWithNodes
+
+        expectedHeight = 4
 
 testTreeRemoveHeight :: Test
-testTreeRemoveHeight = TestCase (assertEqual "Checks the height of a tree after removing a node" expectedHeight (treeHeight (remove 10 hugeTreeWithNodes)))
+testTreeRemoveHeight = TestCase (assertEqual "Checks the height of a tree after removing a node (should not affect height)" expectedHeight (treeHeight (remove 1 removeTree)))
+    where
+        removeTree = remove 1 hugeTreeWithNodes
+
+        expectedHeight = 4
+
+testTreeRemoveHeightChange :: Test
+testTreeRemoveHeightChange = TestCase (assertEqual "Checks the height of a tree after removing a node that changes tree height" expectedHeight (treeHeight (remove 6 hugeTreeWithNodes)))
     where
         expectedHeight = 3
+
