@@ -8,7 +8,8 @@ module BST (
     removeIf,
     findMin,
     treeHeight,
-    rotateLeft
+    rotateLeft,
+    rotateRight
 ) where
 
 -- A dictionary data structure contains a collection of key/item pairs, such that each key occurs at-most once,
@@ -106,6 +107,8 @@ rotateLeft Empty = Empty
 rotateLeft (Node k v left (Node rotatedK rotatedV rotatedL rotatedR)) = Node rotatedK rotatedV (Node k v left rotatedL) rotatedR
 rotateLeft (Node k v left right) = Node k v (rotateLeft left) right
 
+rotateRight :: BST k v -> BST k v
+rotateRight Empty = Empty
 
 -- example tree
 -- treeWithNodes :: BST Int String

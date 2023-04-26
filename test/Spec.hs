@@ -11,6 +11,7 @@ import BST
       treeToList,
       treeHeight,
       rotateLeft,
+      rotateRight,
       BST(..) )
 
 isEven :: Int -> Bool
@@ -119,7 +120,8 @@ heightTests = TestList [
 
 rotateTests :: Test
 rotateTests = TestList [
-    testTreeRotateLeft
+    testTreeRotateLeft,
+    testTreeRotateRight
     ]
 -- CREATING A TREE TESTS
 testEmptyTree :: Test
@@ -323,6 +325,15 @@ testTreeRotateLeft = TestCase (assertEqual "Checks the tree is rotated left" exp
                         )
                         Empty
 
-
+testTreeRotateRight :: Test
+testTreeRotateRight = TestCase (assertEqual "Checks the tree is rotated right" expectedTree (rotateRight largerTreeWithNodes))
+    where
+        expectedTree = Node 2 "B" 
+                (Node 1 "A" Empty Empty) 
+                (Node 4 "D" 
+                    (Node 3 "C" Empty Empty)
+                    (Node 7 "G" 
+                        (Node 5 "F" Empty Empty)
+                    Empty))
 
         
