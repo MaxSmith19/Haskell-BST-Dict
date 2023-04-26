@@ -82,6 +82,10 @@ removeIf predicate (Node key value left right) -- if not empty, check if the pre
     | predicate key = remove key (Node key value (removeIf predicate left) (removeIf predicate right)) -- if true, remove the node
     | otherwise = Node key value (removeIf predicate left) (removeIf predicate right) -- if false, keep the node
 
+
+treeHeight :: BST a b -> Int
+
+
 -- example tree
 -- treeWithNodes :: BST Int String
 -- treeWithNodes = Node 2 "B"

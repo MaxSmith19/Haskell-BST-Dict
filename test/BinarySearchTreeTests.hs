@@ -6,7 +6,6 @@ import BST
 
 isEven :: Int -> Bool
 isEven k = k `mod` 2 == 0
-
 isOdd :: Int -> Bool
 isOdd k = k `mod` 2 /= 0
 
@@ -118,7 +117,7 @@ testTreeInsertion = TestCase (assertEqual "Inserts a node into a tree" expectedT
     where 
         insertedTree = insert 3 "C" treeWithNodes 
         
-        expectedTree = Node 2 "B"
+        expectedTree = Node 2 "B"   
                         (Node 1 "A" Empty Empty) -- left
                         (Node 3 "C" Empty Empty) -- right
 
@@ -260,3 +259,18 @@ testTreeRemoveNone :: Test
 testTreeRemoveNone = TestCase (assertEqual "Removes no nodes from a tree" expectedTree (treeToList (removeIf (const False) hugeTreeWithNodes)))
     where
         expectedTree = treeToList hugeTreeWithNodes
+
+testTreeHeight :: Test
+testTreeHeight = TestCase (assertEqual "Checks the height of a tree" expectedHeight (treeHeight hugeTreeWithNodes))
+    where
+        expectedHeight = 4
+
+testTreeInsertHeight :: Test
+testTreeInsertHeight = TestCase (assertEqual "Checks the height of a tree after inserting a node" expectedHeight (treeHeight (insert 11 "J" hugeTreeWithNodes)))
+    where
+        expectedHeight = 5
+
+testTreeRemoveHeight :: Test
+testTreeRemoveHeight = TestCase (assertEqual "Checks the height of a tree after removing a node" expectedHeight (treeHeight (remove 10 hugeTreeWithNodes)))
+    where
+        expectedHeight = 3
